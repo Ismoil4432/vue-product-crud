@@ -166,7 +166,7 @@ function showModal() {
 
 const productStore = useProductStore();
 
-const product = ref(productStore.getAll);
+const product = ref([]);
 
 const dataItem = reactive({
   image: "mobile-image-9.png",
@@ -190,6 +190,7 @@ const clear = () => {
 
 const updateList = () => {
   product.value = productStore.getAll;
+  localStorage.setItem("data", JSON.stringify(product.value));
 };
 
 const submit = () => {
@@ -206,6 +207,7 @@ const submit = () => {
     productStore.create(item);
   } else {
     productStore.update(editId.value, item);
+    isEdit.value = false;
   }
 
   closeModal();
@@ -245,12 +247,16 @@ const remove = (id) => {
     .then(() => {
       productStore.remove(id);
 
-      props.updateList();
+      updateList();
     })
     .catch(() => {});
 };
 
 onMounted(() => {
+  const localData = localStorage.getItem("data");
+  if (localData) {
+    productStore.setList(JSON.parse(localData));
+  }
   updateList();
 });
 </script>

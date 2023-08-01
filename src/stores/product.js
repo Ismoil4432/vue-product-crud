@@ -97,6 +97,10 @@ export const useProductStore = defineStore("product", () => {
 
   const getOne = (id) => data.value.find((item) => item.id == id);
 
+  function setList(list) {
+    data.value = list;
+  }
+
   function create(newItem) {
     data.value.push({ id: generateUniqueId(), ...newItem });
   }
@@ -135,5 +139,5 @@ export const useProductStore = defineStore("product", () => {
     return id;
   }
 
-  return { getAll, getOne, create, update, remove };
+  return { getAll, getOne, setList, create, update, remove };
 });
